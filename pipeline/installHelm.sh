@@ -5,7 +5,7 @@ install_HelmCli() {
   echo -n "installing Helm CLI..."
 
   # install Helm
-  curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh
+  curl -q https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh
   chmod 700 get_helm.sh
   ./get_helm.sh
 
