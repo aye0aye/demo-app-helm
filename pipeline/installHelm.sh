@@ -18,3 +18,5 @@ install_HelmCli() {
     fi
   fi
 }
+
+install_HelmCli
