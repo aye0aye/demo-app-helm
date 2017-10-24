@@ -17,7 +17,7 @@ jobs:
   - name: sample_helm_deploy_test
     type: runSh
     steps:
-      - IN: kube_cluster_config
+      - IN: kube_cluster_info
       - IN: int_aws_helm
       - IN: repo_sample_helm
         switch: off
@@ -40,10 +40,10 @@ jobs:
             echo "deploying to ${CLUSTER_NAME} via Helm"
             helm upgrade --install sample-0.0.1 ./chartSample
             popd
-      - OUT: img_sample_helm
-        replicate: img_sample_helm_validated
-      - OUT: img_nginx_helm
-        replicate: img_nginx_helm_validated
+      - OUT: img_sample_helm_validated
+        replicate: img_sample_helm
+      - OUT: img_nginx_helm_validated
+        replicate: img_nginx_helm
     flags:
       - e2eShippableDemo
       - helm
