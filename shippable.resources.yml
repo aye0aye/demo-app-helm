@@ -59,6 +59,15 @@ resources:
 ################################
 # PROD environment
 
+# Docker Image validated in Test
+  - name: img_sample_helm_validated
+    type: image
+    integration: dr-ecr
+    pointer:
+      sourceName: 679404489841.dkr.ecr.us-east-1.amazonaws.com/demo-app-helm
+    seed:
+      versionName: master.1
+
 # env vars - Sample Node Aye-Aye component - TEST
   - name: params_sample_helm_prod
     type: params

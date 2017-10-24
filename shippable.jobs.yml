@@ -13,7 +13,7 @@ jobs:
       - e2eShippableDemo
       - helm
 
-# TEST deployment to Kube cluster on AWS
+# TEST deployment to Kube cluster on AWS 
   - name: sample_helm_deploy_test
     type: runSh
     steps:
@@ -24,6 +24,42 @@ jobs:
       - IN: img_sample_helm
       - IN: params_sample_helm_test
       - IN: img_nginx_helm
+      - TASK:
+        - script: echo "starting deployment to ${ENVIRONMENT}"
+        # retrieve Kube config from cluster
+        - script: kops export kubecfg --name ${CLUSTER_NAME} --state ${KOPS_STATE_STORE}
+        # install Helm CLI
+        - script: |
+            pushd $REPO_SAMPLE_HELM_STATE
+            . pipeline/installHelm.sh
+        # deploy to TEST namespace in Kube cluster
+        # - script: . pipeline/deploy.sh
+        - script: |
+            ENVIRONMENT=$(echo "$ENVIRONMENT" | awk '{print tolower($0)}')
+            shipctl replace chartSample/values.yaml 
+            echo "deploying to ${CLUSTER_NAME} via Helm"
+            helm upgrade --install sample-0.0.1 ./chartSample
+            popd
+      - OUT: img_sample_helm
+        replicate: img_sample_helm_validated
+      - OUT: img_nginx_helm
+        replicate: img_nginx_helm_validated
+    flags:
+      - e2eShippableDemo
+      - helm
+
+# PROD deployment to Kube cluster on AWS 
+  - name: sample_helm_deploy_test
+    type: runSh
+    steps:
+      - IN: sample_helm_deploy_test
+      - IN: kube_cluster_config
+      - IN: int_aws_helm
+      - IN: repo_sample_helm
+        switch: off
+      - IN: img_sample_helm_validated
+      - IN: params_sample_helm_prod
+      - IN: img_nginx_helm_validated
       - TASK:
         - script: echo "starting deployment to ${ENVIRONMENT}"
         # retrieve Kube config from cluster
