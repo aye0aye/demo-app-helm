@@ -17,6 +17,13 @@ install_HelmCli() {
       echo "Helm CLI installed successfully"
     fi
   fi
+
+  # wait for tiller pod to be available
+  while [ $(kubectl -n kube-system get pods | grep "tiller" | awk '{print $3}') != "Running" ]
+  do
+    echo "Tiller pod not yet active"
+    sleep 10
+  done
 }
 
 install_HelmCli
