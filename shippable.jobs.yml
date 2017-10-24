@@ -6,35 +6,47 @@ jobs:
 
 # add pipeline job
 # TEST deployment to Kube cluster on AWS
-  - name: sample-kube-helm-deploy-test
+  - name: sample_helm_deploy_test
     type: runSh
     steps:
-      - IN: int-aws
-      - IN: int-kube
-      - IN: params-kube-helm-test
-      - IN: repo-sample-kube-helm
+      - IN: kube_cluster_config
+      - IN: int_aws_helm
+      - IN: repo_sample_helm
         switch: off
-      - IN: img-sample-kube-helm
-      - IN: params-sample-kube-helm-test
-      - IN: img-nginx
+      - IN: img_nginx_helm
+      - IN: img_sample_helm
+      - IN: params_sample_helm_test
       - TASK:
-        - script: echo "starting tasks"
-        - script: . $REPOSAMPLEKUBEHELM_PATH/gitRepo/pipeline/prepEnvironment.sh
-        - script: . $REPOSAMPLEKUBEHELM_PATH/gitRepo/pipeline/deploy.sh
+        - script: echo "starting deployment to ${ENVIRONMENT}"
+        # retrieve Kube config from cluster
+        - script: kops export kubecfg --name ${CLUSTER_NAME} --state ${KOPS_STATE_STORE}
+        # install Helm CLI
+        - script: |
+            pushd $REPO_SAMPLE_HELM_STATE
+            . pipeline/installHelm.sh
+        # deploy to TEST namespace in Kube cluster
+        # - script: . pipeline/deploy.sh
+        - script: |
+            ENVIRONMENT=$(echo "$ENVIRONMENT" | awk '{print tolower($0)}')
+            shipctl replace chartSample/values.yaml 
+            echo "deploying to ${CLUSTER_NAME} via Helm"
+            helm upgrade --install sample-0.0.1 ./chartSample
+            popd
 
 # add pipeline job
 # PROD deployment to Kube cluster on AWS
-  - name: sample-kube-helm-deploy-prod
+  - name: sample_helm_deploy_prod
     type: runSh
     steps:
-      - IN: sample-kube-helm-deploy-test
+      - IN: kube_cluster_config
+      - IN: sample_helm_deploy_test
         switch: off
-      - IN: int-aws
-      - IN: int-kube
-      - IN: params-kube-helm-prod
-      - IN: repo-sample-kube-helm
+      - IN: int_aws
+      - IN: int_kube
+      - IN: params_helm_prod
+      - IN: repo_sample_helm
         switch: off
-      - IN: params-sample-kube-helm-prod
+      - IN: params_sample_helm_prod
       - TASK:
-        - script: . $REPOSAMPLEKUBEHELM_PATH/gitRepo/pipeline/prepEnvironment.sh
-        - script: . $REPOSAMPLEKUBEHELM_PATH/gitRepo/pipeline/deploy.sh
+        - script: . $REPO_SAMPLE_HELM_STATE/pipeline/prepEnvironment.sh
+        - script: . $REPO_SAMPLE_HELM_STATE/pipeline/deploy.sh
