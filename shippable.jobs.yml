@@ -77,7 +77,7 @@ jobs:
         # install Helm CLI
         - script: |
             pushd $REPO_SAMPLE_HELM_STATE
-            ./pipeline/installHelm.sh
+            . pipeline/installHelm.sh
         # deploy to TEST namespace in Kube cluster
         # - script: . pipeline/deploy.sh
         - script: |

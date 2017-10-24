@@ -11,11 +11,9 @@ build:
     - echo 'CI is running'
   post_ci:
     - docker build -t $REGISTRY_URL/$REPO:$BRANCH.$BUILD_NUMBER .
-
-    # Pushing to registries
-
-    # ECR
     - docker push $REGISTRY_URL/$REPO:$BRANCH.$BUILD_NUMBER
+  on_success:
+    - shipctl put_resource_state e2eshipdemo-img-ecs versionName $BRANCH.$BUILD_NUMBER
 
 integrations:
   hub:
