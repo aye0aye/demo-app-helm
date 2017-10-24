@@ -1,0 +1,89 @@
+resources:
+
+  # resources for sample application running on Kubernetes on AWS
+
+################################
+
+################################
+
+  - name: int-kube-helm
+    type: integration
+    integration: ttrahan-kube
+
+# Integration to that stores AWS credentials
+  - name: int-aws-helm
+    type: integration
+    integration: ttrahan-aws
+
+################################
+# Nginx component
+
+# Docker Image
+  - name: img-nginx-helm
+    type: image
+    pointer:
+      sourceName: nginx
+    seed:
+      versionName: 1.7.9
+
+################################
+# Sample Node Aye-Aye component
+
+# application code
+  - name: repo-sample-kube-helm
+    type: gitRepo
+    integration: ttrahan-gh
+    pointer:
+      sourceName: ttrahan/kubernetes-helm-example
+      branch: master
+
+# Docker Image
+  - name: img-sample-kube-helm
+    type: image
+    integration: ttrahan-dh
+    pointer:
+      sourceName: ttrahan/kubernetes-helm-example
+    seed:
+      versionName: master.1
+
+################################
+# TEST environment
+
+# Global env vars - Test environment
+  - name: params-kube-helm-test
+    type: params
+    version:
+      params:
+        ENVIRONMENT: "TEST"
+        CLUSTER: "useast1.dev.example-kube-cluster.com"
+
+# env vars - Sample Node Aye-Aye component - TEST
+  - name: params-sample-kube-helm-test
+    type: params
+    version:
+      params:
+        PORT: 80
+        MEMORY: 64
+        CPUSHARES: .25
+        REPLICAS: 1
+
+################################
+# PROD environment
+
+# Global env vars - Prod environment
+  - name: params-kube-helm-prod
+    type: params
+    version:
+      params:
+        ENVIRONMENT: "PROD"
+        CLUSTER: "useast1.dev.example-kube-cluster.com"
+
+# env vars - Sample Node Aye-Aye component - TEST
+  - name: params-sample-kube-helm-prod
+    type: params
+    version:
+      params:
+        PORT: 80
+        MEMORY: 128
+        CPUSHARES: .5
+        REPLICAS: 2

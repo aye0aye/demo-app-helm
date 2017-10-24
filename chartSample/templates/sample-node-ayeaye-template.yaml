@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  # Unique key of the Deployment instance
+  name: sample-node-ayeaye-helm-{{ .Values.environment }}
+spec:
+  # 3 Pods should exist at all times.
+  replicas: {{ .Values.sample.replicaCount | default 1 }}
+  # Keep record of 10 revisions for rollback
+  revisionHistoryLimit: 10
+  template:
+    metadata:
+      labels:
+        # Apply this label to pods and default
+        # the Deployment label selector to this value
+        app: {{ .Chart.Name }}
+        env: {{ .Values.environment }} 
+    spec:
+      containers:
+      - name: sample-node-ayeaye
+        image: {{ .Values.sample.image.repo }}:{{ .Values.sample.image.tag }}
+        ports:
+        - containerPort: 80
+        env:
+        - name: ENVIRONMENT
+          value: "{{ .Values.environment }}"
+        - name: PORT
+          value: "{{ .Values.sample.port }}"
+        resources:
+          requests:
+            memory: {{ .Values.sample.resources.limits.memory }}
+            cpu: {{ .Values.sample.resources.limits.cpu }}

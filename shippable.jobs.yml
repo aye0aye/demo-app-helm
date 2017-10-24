@@ -1,0 +1,40 @@
+jobs:
+
+# jobs for the sample node app pipeline from CI thru TEST environment
+
+################################
+
+# add pipeline job
+# TEST deployment to Kube cluster on AWS
+  - name: sample-kube-helm-deploy-test
+    type: runSh
+    steps:
+      - IN: int-aws
+      - IN: int-kube
+      - IN: params-kube-helm-test
+      - IN: repo-sample-kube-helm
+        switch: off
+      - IN: img-sample-kube-helm
+      - IN: params-sample-kube-helm-test
+      - IN: img-nginx
+      - TASK:
+        - script: echo "starting tasks"
+        - script: . $REPOSAMPLEKUBEHELM_PATH/gitRepo/pipeline/prepEnvironment.sh
+        - script: . $REPOSAMPLEKUBEHELM_PATH/gitRepo/pipeline/deploy.sh
+
+# add pipeline job
+# PROD deployment to Kube cluster on AWS
+  - name: sample-kube-helm-deploy-prod
+    type: runSh
+    steps:
+      - IN: sample-kube-helm-deploy-test
+        switch: off
+      - IN: int-aws
+      - IN: int-kube
+      - IN: params-kube-helm-prod
+      - IN: repo-sample-kube-helm
+        switch: off
+      - IN: params-sample-kube-helm-prod
+      - TASK:
+        - script: . $REPOSAMPLEKUBEHELM_PATH/gitRepo/pipeline/prepEnvironment.sh
+        - script: . $REPOSAMPLEKUBEHELM_PATH/gitRepo/pipeline/deploy.sh
