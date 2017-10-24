@@ -49,7 +49,7 @@ jobs:
       - helm
 
 # PROD deployment to Kube cluster on AWS 
-  - name: sample_helm_deploy_test
+  - name: sample_helm_deploy_prod
     type: runSh
     steps:
       - IN: sample_helm_deploy_test
