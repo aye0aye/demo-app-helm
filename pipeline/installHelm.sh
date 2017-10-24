@@ -24,6 +24,7 @@ install_HelmCli() {
     echo "Tiller pod not yet active"
     sleep 10
   done
+  echo "Tiller pod now active"
 }
 
 install_HelmCli
