@@ -33,20 +33,20 @@ jobs:
             helm upgrade --install sample-0.0.1 ./chartSample
             popd
 
-# add pipeline job
-# PROD deployment to Kube cluster on AWS
-  - name: sample_helm_deploy_prod
-    type: runSh
-    steps:
-      - IN: kube_cluster_config
-      - IN: sample_helm_deploy_test
-        switch: off
-      - IN: int_aws
-      - IN: int_kube
-      - IN: params_helm_prod
-      - IN: repo_sample_helm
-        switch: off
-      - IN: params_sample_helm_prod
-      - TASK:
-        - script: . $REPO_SAMPLE_HELM_STATE/pipeline/prepEnvironment.sh
-        - script: . $REPO_SAMPLE_HELM_STATE/pipeline/deploy.sh
+# # add pipeline job
+# # PROD deployment to Kube cluster on AWS
+#   - name: sample_helm_deploy_prod
+#     type: runSh
+#     steps:
+#       - IN: kube_cluster_config
+#       - IN: sample_helm_deploy_test
+#         switch: off
+#       - IN: int_aws
+#       - IN: int_kube
+#       - IN: params_helm_prod
+#       - IN: repo_sample_helm
+#         switch: off
+#       - IN: params_sample_helm_prod
+#       - TASK:
+#         - script: . $REPO_SAMPLE_HELM_STATE/pipeline/prepEnvironment.sh
+#         - script: . $REPO_SAMPLE_HELM_STATE/pipeline/deploy.sh
