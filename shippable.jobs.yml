@@ -1,10 +1,18 @@
 jobs:
 
-# jobs for the sample node app pipeline from CI thru TEST environment
+#---------------------------------------------------------------#
+#----------------------------   Dev   --------------------------#
+#---------------------------------------------------------------#
 
-################################
+# runCI job that builds and pushes artifact using Shippable CI
+  - name: demo-app-helm_runCI
+    type: runCI
+    steps:
+      - OUT: img_sample_helm
+    flags:
+      - e2eShippableDemo
+      - helm
 
-# add pipeline job
 # TEST deployment to Kube cluster on AWS
   - name: sample_helm_deploy_test
     type: runSh
@@ -13,9 +21,9 @@ jobs:
       - IN: int_aws_helm
       - IN: repo_sample_helm
         switch: off
-      - IN: img_nginx_helm
       - IN: img_sample_helm
       - IN: params_sample_helm_test
+      - IN: img_nginx_helm
       - TASK:
         - script: echo "starting deployment to ${ENVIRONMENT}"
         # retrieve Kube config from cluster
@@ -32,6 +40,9 @@ jobs:
             echo "deploying to ${CLUSTER_NAME} via Helm"
             helm upgrade --install sample-0.0.1 ./chartSample
             popd
+    flags:
+      - e2eShippableDemo
+      - helm
 
 # # add pipeline job
 # # PROD deployment to Kube cluster on AWS
@@ -50,3 +61,6 @@ jobs:
 #       - TASK:
 #         - script: . $REPO_SAMPLE_HELM_STATE/pipeline/prepEnvironment.sh
 #         - script: . $REPO_SAMPLE_HELM_STATE/pipeline/deploy.sh
+    # flags:
+    #   - e2eShippableDemo
+    #   - helm
