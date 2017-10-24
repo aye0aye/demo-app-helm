@@ -13,8 +13,6 @@ done
 install_ShellTools
 
 # install required CLIs
-install_AwsCli
-install_KubectlCli
 install_HelmCli
 
 # Leverage the environment variables that were automatically injected
