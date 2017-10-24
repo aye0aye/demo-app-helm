@@ -18,13 +18,18 @@ jobs:
     type: runSh
     steps:
       - IN: kube_cluster_info
-      - IN: int_aws_helm
+      - IN: aws_cli_config_kube
+      # - IN: int_aws_helm
       - IN: repo_sample_helm
         switch: off
       - IN: img_sample_helm
       - IN: params_sample_helm_test
       - IN: img_nginx_helm
       - TASK:
+        # set aws variables for use by KOPS
+        - script: |
+            export AWS_ACCESS_KEY_ID=$(aws configure get aws_access_key_id)
+            export AWS_SECRET_ACCESS_KEY=$(aws configure get aws_secret_access_key)
         - script: echo "starting deployment to ${ENVIRONMENT}"
         # retrieve Kube config from cluster
         - script: kops export kubecfg --name ${CLUSTER_NAME} --state ${KOPS_STATE_STORE}
@@ -54,13 +59,18 @@ jobs:
     steps:
       - IN: sample_helm_deploy_test
       - IN: kube_cluster_info
-      - IN: int_aws_helm
+      - IN: aws_cli_config_kube
+      # - IN: int_aws_helm
       - IN: repo_sample_helm
         switch: off
       - IN: img_sample_helm_validated
       - IN: params_sample_helm_prod
       - IN: img_nginx_helm_validated
       - TASK:
+        # set aws variables for use by KOPS
+        - script: |
+            export AWS_ACCESS_KEY_ID=$(aws configure get aws_access_key_id)
+            export AWS_SECRET_ACCESS_KEY=$(aws configure get aws_secret_access_key)
         - script: echo "starting deployment to ${ENVIRONMENT}"
         # retrieve Kube config from cluster
         - script: kops export kubecfg --name ${CLUSTER_NAME} --state ${KOPS_STATE_STORE}

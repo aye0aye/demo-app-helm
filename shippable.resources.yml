@@ -6,10 +6,10 @@ resources:
   #   type: integration
   #   integration: ttrahan-kube
 
-# Integration that stores AWS credentials
-  - name: int_aws_helm
-    type: integration
-    integration: dr-aws
+# # Integration that stores AWS credentials
+#   - name: int_aws_helm
+#     type: integration
+#     integration: dr-aws
 
 ################################
 # Nginx component
