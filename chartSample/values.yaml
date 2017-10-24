@@ -7,8 +7,8 @@ environment: $ENVIRONMENT
 sample:
   replicaCount: $SAMPLE_REPLICAS
   image:
-    repo: $SAMPLE_IMAGE_URL
-    tag: $SAMPLE_IMAGE_TAG
+    repo: $IMG_SAMPLE_HELM_SOURCENAME
+    tag: $IMG_SAMPLE_HELM_VERSIONNAME
   resources:
     limits:
       cpu: $SAMPLE_CPU
@@ -17,6 +17,6 @@ sample:
 
 nginx:
   image:
-    repo: $NGINX_IMAGE_URL
-    tag: $NGINX_IMAGE_TAG
+    repo: $IMG_NGINX_HELM_SOURCENAME
+    tag: $IMG_NGINX_HELM_VERSIONNAME
 
