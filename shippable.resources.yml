@@ -22,6 +22,14 @@ resources:
     seed:
       versionName: 1.7.9
 
+# Docker Image
+  - name: img_nginx_helm_validated
+    type: image
+    pointer:
+      sourceName: nginx
+    seed:
+      versionName: 1.7.9
+
 ################################
 # Sample Node Aye-Aye component
 
