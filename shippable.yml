@@ -13,7 +13,7 @@ build:
     - docker build -t $REGISTRY_URL/$REPO:$BRANCH.$BUILD_NUMBER .
     - docker push $REGISTRY_URL/$REPO:$BRANCH.$BUILD_NUMBER
   on_success:
-    - shipctl put_resource_state e2eshipdemo-img-ecs versionName $BRANCH.$BUILD_NUMBER
+    - shipctl put_resource_state img_sample_helm versionName $BRANCH.$BUILD_NUMBER
 
 integrations:
   hub:
