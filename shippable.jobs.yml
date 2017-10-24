@@ -53,7 +53,7 @@ jobs:
     type: runSh
     steps:
       - IN: sample_helm_deploy_test
-      - IN: kube_cluster_config
+      - IN: kube_cluster_info
       - IN: int_aws_helm
       - IN: repo_sample_helm
         switch: off
