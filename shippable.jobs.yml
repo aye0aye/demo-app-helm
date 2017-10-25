@@ -62,7 +62,6 @@ jobs:
   - name: sample_helm_deploy_prod
     type: runSh
     steps:
-      - IN: sample_helm_deploy_test
       - IN: kube_cluster_info
       - IN: aws_cli_config_kube
       # - IN: int_aws_helm
