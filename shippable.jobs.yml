@@ -93,11 +93,12 @@ jobs:
         # - script: . pipeline/deploy.sh
         - script: |
             ENVIRONMENT=$(echo "$ENVIRONMENT" | awk '{print tolower($0)}')
-            IMG_SAMPLE_HELM_SOURCENAME=${IMG_SAMPLE_HELM_VALIDATED_SOURCENAME}
-            IMG_SAMPLE_HELM_VERSIONNAME=${IMG_SAMPLE_HELM_VALIDATED_VERSIONNAME}
-            IMG_NGINX_HELM_SOURCENAME=${IMG_NGINX_HELM_VALIDATED_SOURCENAME}
-            IMG_NGINX_HELM_VERSIONNAME=${IMG_NGINX_HELM_VALIDATED_VERSIONNAME}
+            export IMG_SAMPLE_HELM_SOURCENAME=${IMG_SAMPLE_HELM_VALIDATED_SOURCENAME}
+            export IMG_SAMPLE_HELM_VERSIONNAME=${IMG_SAMPLE_HELM_VALIDATED_VERSIONNAME}
+            export IMG_NGINX_HELM_SOURCENAME=${IMG_NGINX_HELM_VALIDATED_SOURCENAME}
+            export IMG_NGINX_HELM_VERSIONNAME=${IMG_NGINX_HELM_VALIDATED_VERSIONNAME}
             shipctl replace chartSample/values.yaml 
+            cat chartSample/values.yaml
             echo "deploying to ${CLUSTER_NAME} via Helm"
             helm upgrade --install sample-0.0.1 ./chartSample
             popd
