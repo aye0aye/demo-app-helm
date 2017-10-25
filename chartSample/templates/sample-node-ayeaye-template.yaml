@@ -1,9 +1,9 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
+  namespace: {{ .Values.environment }}
   # Unique key of the Deployment instance
   name: sample-node-ayeaye-helm-{{ .Values.environment }}
-  namespace: {{ .Values.environment }}
 spec:
   # Number of pods that should exist at all times.
   replicas: {{ .Values.sample.replicaCount | default 1 }}
