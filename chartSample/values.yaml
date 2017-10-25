@@ -2,21 +2,21 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-environment: $ENVIRONMENT
+environment: ${ENVIRONMENT}
 
 sample:
-  replicaCount: $SAMPLE_REPLICAS
+  replicaCount: ${SAMPLE_REPLICAS}
   image:
-    repo: $IMG_SAMPLE_HELM_SOURCENAME
-    tag: $IMG_SAMPLE_HELM_VERSIONNAME
+    repo: ${IMG_SAMPLE_HELM_SOURCENAME}
+    tag: ${IMG_SAMPLE_HELM_VERSIONNAME}
   resources:
     limits:
-      cpu: $SAMPLE_CPU
-      memory: $SAMPLE_MEMORY
-  port: $SAMPLE_PORT
+      cpu: ${SAMPLE_CPU}
+      memory: ${SAMPLE_MEMORY}
+  port: ${SAMPLE_PORT}
 
 nginx:
   image:
-    repo: $IMG_NGINX_HELM_SOURCENAME
-    tag: $IMG_NGINX_HELM_VERSIONNAME
+    repo: ${IMG_NGINX_HELM_SOURCENAME}
+    tag: ${IMG_NGINX_HELM_VERSIONNAME}
 
